@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+}
+
+ext {
+    lombokVersion = '1.18.28'
+}
+
+group 'bback.module'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
+
+    // https://mvnrepository.com/artifact/org.springframework/spring-core
+    implementation group: 'org.springframework', name: 'spring-core', version: '5.3.29'
+
+    // https://mvnrepository.com/artifact/org.apache.poi/poi
+    implementation group: 'org.apache.poi', name: 'poi', version: '5.2.2'
+
+    // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.2'
+
+    // https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-core
+    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.78'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'bback.module.Main'
+    }
+    from {
+        configurations.runtimeClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+task("re-jar") {
+    doFirst { println("clean re-jar...") }
+    dependsOn clean
+    dependsOn jar
+    doLast { println("build re-jar...") }
+
+}
