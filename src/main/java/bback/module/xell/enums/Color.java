@@ -52,14 +52,14 @@ public enum Color {
     , LIGHT_CORNFLOWER_BLUE(HSSFColor.HSSFColorPredefined.LIGHT_CORNFLOWER_BLUE)
     , TAN(HSSFColor.HSSFColorPredefined.TAN)
     ;
-    private final HSSFColor.HSSFColorPredefined color;
+    private final HSSFColor.HSSFColorPredefined value;
 
     Color(HSSFColor.HSSFColorPredefined color) {
-        this.color = color;
+        this.value = color;
     }
 
     public short get() {
-        return this.color.getIndex();
+        return this.value.getIndex();
     }
 
 }
