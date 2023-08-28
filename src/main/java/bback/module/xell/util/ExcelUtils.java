@@ -47,6 +47,9 @@ public class ExcelUtils {
             boolean dirExist = filePath.exists() || filePath.mkdirs();
             if (dirExist) {
                 boolean result = file.createNewFile();
+                if (!result) {
+                    throw new IOException("파일을 생성하는데에 실패하였습니다.");
+                }
             }
         }
     }

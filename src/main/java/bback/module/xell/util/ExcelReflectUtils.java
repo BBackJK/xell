@@ -59,14 +59,16 @@ public class ExcelReflectUtils {
                 }
             }
         } catch (SecurityException e) {
-            log.info(e.getMessage());
-            throw new RuntimeException(e);
+            log.warn(e.getMessage());
         }
         return fieldList;
     }
 
     public List<Method> filterMethodByExcelAnnotation(Class<?> clazz, Class<? extends Annotation> annotation) {
         List<Method> methodList = new ArrayList<>();
+        if ( clazz == null ) {
+            return methodList;
+        }
         try {
 
             Method[] methods = clazz.getDeclaredMethods();
@@ -80,8 +82,7 @@ public class ExcelReflectUtils {
             }
 
         } catch (SecurityException e) {
-            log.info(e.getMessage());
-            throw new RuntimeException(e);
+            log.warn(e.getMessage());
         }
         return methodList;
     }
