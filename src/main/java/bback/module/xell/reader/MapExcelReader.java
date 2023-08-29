@@ -16,8 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public class MapExcelReader extends AbstractGridExcelReader<Map, String> {
+public class MapExcelReader extends AbstractGridExcelReader<Map<String, String>, String> {
 
+    private static final Class<? extends Map<String, String>> clazz = (Class<? extends Map<String, String>>) Map.class;
     private final Map<String, String> keyMap;
 
     public MapExcelReader() {
@@ -25,7 +26,7 @@ public class MapExcelReader extends AbstractGridExcelReader<Map, String> {
     }
 
     public MapExcelReader(Map<String, String> keyMap) {
-        super(Map.class);
+        super((Class<Map<String, String>>) clazz);
         this.keyMap = keyMap;
     }
 
@@ -34,7 +35,7 @@ public class MapExcelReader extends AbstractGridExcelReader<Map, String> {
     }
 
     public MapExcelReader(InputStream is) {
-        super(Map.class, is);
+        super((Class<Map<String, String>>) clazz, is);
         this.keyMap = null;
     }
 
@@ -61,12 +62,12 @@ public class MapExcelReader extends AbstractGridExcelReader<Map, String> {
     }
 
     @Override
-    protected Map createTarget() {
-        return new HashMap<String, String>();
+    protected Map<String, String> createTarget() {
+        return new HashMap<>();
     }
 
     @Override
-    protected void setTargetData(Map data, String cellValue, @Nullable String keyValue) {
+    protected void setTargetData(Map<String, String> data, String cellValue, @Nullable String keyValue) {
         if ( data != null && keyValue != null) {
             data.put(keyValue, cellValue);
         }
