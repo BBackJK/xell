@@ -12,7 +12,7 @@ import java.util.List;
 public class ListGridExcelWriter extends AbstractGridExcelWriter<List<Object>> {
 
     private final List<List<String>> header;
-    protected ListGridExcelWriter(List<List<String>> header, List<List<Object>> dataList) {
+    public ListGridExcelWriter(List<List<String>> header, List<List<Object>> dataList) {
         super((Class<List<Object>>) dataList.getClass(), dataList);
         this.header = header;
     }
