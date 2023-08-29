@@ -1,34 +1,35 @@
 package bback.module.xell.util;
 
-import lombok.experimental.UtilityClass;
-
 import java.lang.reflect.Field;
 
-@UtilityClass
-public class ExcelStringUtils {
-    public final String EMPTY = "";
+public final class ExcelStringUtils {
 
-    public String toPascal(String value) {
+    private ExcelStringUtils() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
+    public static final String EMPTY = "";
+
+    public static String toPascal(String value) {
         return value == null || value.isEmpty()
                 ? EMPTY
                 : value.replaceFirst(value.substring(0, 1), value.substring(0, 1).toUpperCase());
     }
     
-    public String toGetterByField(Field f) {
+    public static String toGetterByField(Field f) {
         return f == null ? EMPTY : toGetterByField(f.getName());
     }
 
-    public String toGetterByField(String fieldName) {
+    public static String toGetterByField(String fieldName) {
         return fieldName == null || fieldName.isEmpty()
                 ? EMPTY
                 : "get" + toPascal(fieldName);
     }
 
-    public String toSetterByField(Field f) {
+    public static String toSetterByField(Field f) {
         return f == null ? EMPTY : toSetterByField(f.getName());
     }
 
-    public String toSetterByField(String fieldName) {
+    public static String toSetterByField(String fieldName) {
         return fieldName == null || fieldName.isEmpty()
                 ? EMPTY
                 : "set" + toPascal(fieldName);

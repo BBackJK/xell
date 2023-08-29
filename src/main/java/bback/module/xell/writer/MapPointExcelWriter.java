@@ -1,14 +1,11 @@
 package bback.module.xell.writer;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 
 import java.util.Map;
 import java.util.regex.Pattern;
 
-@Slf4j
 public class MapPointExcelWriter extends AbstractPointExcelWriter<Map> {
-
 
     public MapPointExcelWriter() {
         this(null);

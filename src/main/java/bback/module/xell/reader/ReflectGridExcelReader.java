@@ -5,10 +5,11 @@ import bback.module.xell.exceptions.ExcelReadException;
 import bback.module.xell.exceptions.ExcelWriteException;
 import bback.module.xell.util.ExcelReflectUtils;
 import bback.module.xell.util.ExcelStringUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.util.MethodInvoker;
 
@@ -21,8 +22,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 public class ReflectGridExcelReader<T> extends AbstractGridExcelReader<T, MethodInvoker> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReflectGridExcelReader.class);
 
     public ReflectGridExcelReader(Class<T> classType) {
         super(classType);
@@ -86,7 +88,7 @@ public class ReflectGridExcelReader<T> extends AbstractGridExcelReader<T, Method
             Constructor<T> constructor = super.classType.getConstructor();
             return constructor.newInstance();
         } catch (Exception e) {
-            log.error(String.format("%s 클래스의 생성자에 접근할 수 없습니다. cause :: %s", super.classType.getSimpleName(), e.getMessage()));
+            LOGGER.error(String.format("%s 클래스의 생성자에 접근할 수 없습니다. cause :: %s", super.classType.getSimpleName(), e.getMessage()));
             throw new ExcelReadException();
         }
     }

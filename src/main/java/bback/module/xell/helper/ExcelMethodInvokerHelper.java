@@ -1,6 +1,5 @@
 package bback.module.xell.helper;
 
-import lombok.Getter;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.MethodInvoker;
@@ -10,7 +9,6 @@ import java.util.Optional;
 
 public class ExcelMethodInvokerHelper<T extends Annotation> implements Comparable<ExcelMethodInvokerHelper<T>> {
 
-    @Getter
     @NonNull
     private final MethodInvoker invoker;
 
@@ -46,5 +44,9 @@ public class ExcelMethodInvokerHelper<T extends Annotation> implements Comparabl
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
+    }
+
+    public MethodInvoker getInvoker() {
+        return this.invoker;
     }
 }

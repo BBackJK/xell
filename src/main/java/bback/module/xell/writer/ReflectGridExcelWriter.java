@@ -7,7 +7,6 @@ import bback.module.xell.util.ExcelListUtils;
 import bback.module.xell.util.ExcelReflectUtils;
 import bback.module.xell.util.ExcelStringUtils;
 import bback.module.xell.util.ExcelUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -15,6 +14,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.util.MethodInvoker;
@@ -27,8 +28,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@Slf4j
 public class ReflectGridExcelWriter<T> extends AbstractGridExcelWriter<T> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReflectGridExcelWriter.class);
 
     public ReflectGridExcelWriter(Class<T> classType) {
         super(classType, Collections.emptyList());
@@ -92,7 +94,7 @@ public class ReflectGridExcelWriter<T> extends AbstractGridExcelWriter<T> {
                 try {
                     sheet.addMergedRegion(CellRangeAddress.valueOf(mergeCellValue));
                 } catch (IllegalArgumentException e) {
-                    log.error(" 병합 수식 [{}] 는 유효하지 않은 값입니다. ", mergeCellValue);
+                    LOGGER.error(" 병합 수식 [{}] 는 유효하지 않은 값입니다. ", mergeCellValue);
                 }
             }
         }
@@ -154,7 +156,7 @@ public class ReflectGridExcelWriter<T> extends AbstractGridExcelWriter<T> {
                 try {
                     sheet.flushRows(ExcelUtils.WINDOW_SIZE);
                 } catch (IOException e) {
-                    log.error("엑셀 파일을 만드는 중 Sheet 를 flush 시키는데 실패하였습니다.");
+                    LOGGER.error("엑셀 파일을 만드는 중 Sheet 를 flush 시키는데 실패하였습니다.");
                     throw new ExcelWriteException();
                 }
             }

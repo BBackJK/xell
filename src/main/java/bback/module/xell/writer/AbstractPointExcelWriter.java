@@ -8,12 +8,13 @@ import bback.module.xell.helper.ExcelSheetInfo;
 import bback.module.xell.util.ExcelReflectUtils;
 import bback.module.xell.util.ExcelStringUtils;
 import bback.module.xell.util.ExcelUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressBase;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.util.MethodInvoker;
 
@@ -31,9 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 public abstract class AbstractPointExcelWriter<T> implements PointExcelWriter<T> {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractPointExcelWriter.class);
     protected final Class<T> classType;
     protected final Map<String, ExcelMethodInvokerHelper<ExcelPointer>> excelMethodInvokerHelperMap;
     protected InputStream in;
@@ -156,20 +156,20 @@ public abstract class AbstractPointExcelWriter<T> implements PointExcelWriter<T>
                 ExcelSheetInfo excelSheetInfo = excelSheetInfoList.get(i);
                 Sheet sourceSheet = excelSheetInfo.getSheet();
                 List<Row> sourceRowList = excelSheetInfo.getRowList();
-                int lastRowIndex = excelSheetInfo.getLastRowIndex();
-                int lastColumnIndex = excelSheetInfo.getLastColumnIndex();
+                int maxRowIndex = excelSheetInfo.getMaxRowIndex();
+                int maxColumnIndex = excelSheetInfo.getMaxColumnIndex();
 
                 SXSSFSheet targetSheet = targetWorkbook.createSheet(sourceSheet.getSheetName());
                 targetSheet.setRandomAccessWindowSize(ExcelUtils.WINDOW_SIZE);
 
-                for (int j=0; j<=lastRowIndex;j++) {
+                for (int j=0; j<=maxRowIndex;j++) {
                     Row sourceRow = sourceRowList.get(j);
                     Row targetRow = targetSheet.createRow(j);
 
                     // row set
                     this.setRow(sourceSheet, targetSheet, sourceRow, targetRow);
 
-                    for (int z=0; z<=lastColumnIndex;z++) {
+                    for (int z=0; z<=maxColumnIndex;z++) {
                         Cell sourceCell = sourceRow.getCell(z); // @Nullable
                         Cell targetCell = targetRow.createCell(z);
 
@@ -191,7 +191,7 @@ public abstract class AbstractPointExcelWriter<T> implements PointExcelWriter<T>
             out.close();
             targetWorkbook.dispose();
         } catch (IOException e) {
-            log.info(e.getMessage());
+            LOGGER.error(e.getMessage());
             throw new ExcelWriteException();
         }
     }
@@ -205,29 +205,29 @@ public abstract class AbstractPointExcelWriter<T> implements PointExcelWriter<T>
 
                 List<CellRangeAddress> mergeInfoList = new ArrayList<>();
                 List<Row> rowList = new ArrayList<>();
-                int lastRowIndex = 0;
-                int lastColumnIndex = 0;
+                int maxRowIndex = 0;
+                int maxColumnIndex = 0;
 
                 int mergedRegionCount = sheet.getNumMergedRegions();
                 if ( mergedRegionCount > 0 ) {
                     mergeInfoList.addAll(sheet.getMergedRegions());
-                    lastRowIndex = mergeInfoList.stream().mapToInt(CellRangeAddressBase::getLastRow).max().orElseGet(() -> 0);
-                    lastColumnIndex = mergeInfoList.stream().mapToInt(CellRangeAddressBase::getLastColumn).max().orElseGet(() -> 0);
+                    maxRowIndex = mergeInfoList.stream().mapToInt(CellRangeAddressBase::getLastRow).max().orElseGet(() -> 0);
+                    maxColumnIndex = mergeInfoList.stream().mapToInt(CellRangeAddressBase::getLastColumn).max().orElseGet(() -> 0);
                 }
 
                 int physicalRowIndex = sheet.getPhysicalNumberOfRows() - 1;
-                if (lastRowIndex < physicalRowIndex) {
+                if (maxRowIndex < physicalRowIndex) {
                     i = 0; // 초기화 --> sheet 다시반복
-                    lastRowIndex = physicalRowIndex;
+                    maxRowIndex = physicalRowIndex;
                 }
-                for (int j=0; j<=lastRowIndex;j++) {
+                for (int j=0; j<=maxRowIndex;j++) {
                     Row row = sheet.getRow(j);
 
                     int physicalColumnIndex = row.getPhysicalNumberOfCells() - 1;
-                    if (lastColumnIndex < physicalColumnIndex) {
+                    if (maxColumnIndex < physicalColumnIndex) {
                         j=0;    // 초기화 --> row 다시반복
                         rowList.clear();
-                        lastColumnIndex = physicalColumnIndex;
+                        maxColumnIndex = physicalColumnIndex;
                     }
                     rowList.add(row);
                 }
@@ -237,8 +237,8 @@ public abstract class AbstractPointExcelWriter<T> implements PointExcelWriter<T>
                                 sheet
                                 , mergeInfoList
                                 , rowList
-                                , lastRowIndex
-                                , lastColumnIndex
+                                , maxRowIndex
+                                , maxColumnIndex
                         )
                 );
             }

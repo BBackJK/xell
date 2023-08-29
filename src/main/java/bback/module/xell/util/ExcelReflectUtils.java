@@ -1,7 +1,7 @@
 package bback.module.xell.util;
 
-import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.MethodInvoker;
@@ -17,11 +17,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@UtilityClass
-@Slf4j
-public class ExcelReflectUtils {
+public final class ExcelReflectUtils {
 
-    public List<Method> filterFieldGetterMethods(@NonNull Class<?> clazz) {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExcelReflectUtils.class);
+
+    private ExcelReflectUtils() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
+
+    public static List<Method> filterFieldGetterMethods(@NonNull Class<?> clazz) {
         List<Method> result = new ArrayList<>();
         List<Field> localFields = filterLocalFields(clazz);
         int fieldCount = localFields.size();
@@ -30,13 +34,13 @@ public class ExcelReflectUtils {
                 Method m = clazz.getMethod(ExcelStringUtils.toGetterByField(localFields.get(i)));
                 result.add(m);
             } catch (NoSuchMethodException ex) {
-                log.error(ex.getMessage());
+                LOGGER.error(ex.getMessage());
             }
         }
         return result;
     }
 
-    public List<Field> filterLocalFields(@NonNull Class<?> clazz) {
+    public static List<Field> filterLocalFields(@NonNull Class<?> clazz) {
         Objects.requireNonNull(clazz);
         return Arrays.stream(clazz.getDeclaredFields()).filter(f -> {
             int mod = f.getModifiers();
@@ -44,7 +48,7 @@ public class ExcelReflectUtils {
         }).collect(Collectors.toList());
     }
 
-    public List<Field> filterFieldByExcelAnnotation(Class<?> clazz, Class<? extends Annotation> annotation) {
+    public static List<Field> filterFieldByExcelAnnotation(Class<?> clazz, Class<? extends Annotation> annotation) {
         List<Field> fieldList = new ArrayList<>();
         if ( clazz == null ) {
             return fieldList;
@@ -59,12 +63,12 @@ public class ExcelReflectUtils {
                 }
             }
         } catch (SecurityException e) {
-            log.warn(e.getMessage());
+            LOGGER.warn(e.getMessage());
         }
         return fieldList;
     }
 
-    public List<Method> filterMethodByExcelAnnotation(Class<?> clazz, Class<? extends Annotation> annotation) {
+    public static List<Method> filterMethodByExcelAnnotation(Class<?> clazz, Class<? extends Annotation> annotation) {
         List<Method> methodList = new ArrayList<>();
         if ( clazz == null ) {
             return methodList;
@@ -82,25 +86,25 @@ public class ExcelReflectUtils {
             }
 
         } catch (SecurityException e) {
-            log.warn(e.getMessage());
+            LOGGER.warn(e.getMessage());
         }
         return methodList;
     }
 
     @Nullable
-    public Object invokeTargetObject(MethodInvoker alreadySetTargetMethodInvoker, Object targetObject) {
+    public static Object invokeTargetObject(MethodInvoker alreadySetTargetMethodInvoker, Object targetObject) {
         try {
             alreadySetTargetMethodInvoker.setTargetObject(targetObject);
             alreadySetTargetMethodInvoker.prepare();
             return alreadySetTargetMethodInvoker.invoke();
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-            log.warn(e.getMessage());
+            LOGGER.warn(e.getMessage());
             // Skip..
             return null;
         }
     }
 
-    public void invokeTargetData(MethodInvoker alreadySetTargetMethodInvoker, Object targetObject, Object... args) {
+    public static void invokeTargetData(MethodInvoker alreadySetTargetMethodInvoker, Object targetObject, Object... args) {
         if (alreadySetTargetMethodInvoker == null) return;
         try {
             alreadySetTargetMethodInvoker.setArguments(args);
@@ -109,8 +113,8 @@ public class ExcelReflectUtils {
             alreadySetTargetMethodInvoker.invoke();
         } catch (ClassNotFoundException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
             // skip..
-            log.warn(e.getMessage());
-            log.warn("{} 에 {} 메소드가 유효하지 않습니다.", targetObject, alreadySetTargetMethodInvoker.getTargetMethod());
+            LOGGER.warn(e.getMessage());
+            LOGGER.warn("{} 에 {} 메소드가 유효하지 않습니다.", targetObject, alreadySetTargetMethodInvoker.getTargetMethod());
         }
     }
 }

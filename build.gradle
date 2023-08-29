@@ -2,10 +2,6 @@ plugins {
     id 'java'
 }
 
-ext {
-    lombokVersion = '1.18.28'
-}
-
 group 'bback.module'
 version '1.0-SNAPSHOT'
 
@@ -16,8 +12,6 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
 
     // https://mvnrepository.com/artifact/org.springframework/spring-core
