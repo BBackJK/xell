@@ -28,4 +28,8 @@ public class ExcelListUtils {
             throw e;
         }
     }
+
+    public boolean isEmpty(List<?> list) {
+        return list == null || list.isEmpty();
+    }
 }
