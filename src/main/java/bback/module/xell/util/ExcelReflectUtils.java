@@ -1,7 +1,7 @@
 package bback.module.xell.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import bback.module.xell.logger.Log;
+import bback.module.xell.logger.LogFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.MethodInvoker;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 public final class ExcelReflectUtils {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExcelReflectUtils.class);
+    private static final Log LOGGER = LogFactory.getLog(ExcelReflectUtils.class);
 
     private ExcelReflectUtils() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
@@ -114,7 +114,7 @@ public final class ExcelReflectUtils {
         } catch (ClassNotFoundException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
             // skip..
             LOGGER.warn(e.getMessage());
-            LOGGER.warn("{} 에 {} 메소드가 유효하지 않습니다.", targetObject, alreadySetTargetMethodInvoker.getTargetMethod());
+            LOGGER.warn(targetObject + " 에 " + alreadySetTargetMethodInvoker.getTargetMethod() + " 메소드가 유효하지 않습니다.");
         }
     }
 }

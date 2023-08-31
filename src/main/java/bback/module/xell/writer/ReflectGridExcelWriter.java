@@ -3,6 +3,8 @@ package bback.module.xell.writer;
 import bback.module.xell.annotations.*;
 import bback.module.xell.exceptions.ExcelWriteException;
 import bback.module.xell.helper.ExcelMethodInvokerHelper;
+import bback.module.xell.logger.Log;
+import bback.module.xell.logger.LogFactory;
 import bback.module.xell.util.ExcelListUtils;
 import bback.module.xell.util.ExcelReflectUtils;
 import bback.module.xell.util.ExcelStringUtils;
@@ -14,8 +16,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.util.MethodInvoker;
@@ -30,7 +30,7 @@ import java.util.List;
 
 public class ReflectGridExcelWriter<T> extends AbstractGridExcelWriter<T> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReflectGridExcelWriter.class);
+    private static final Log LOGGER = LogFactory.getLog(ReflectGridExcelWriter.class);
 
     public ReflectGridExcelWriter(Class<T> classType) {
         super(classType, Collections.emptyList());
@@ -94,7 +94,7 @@ public class ReflectGridExcelWriter<T> extends AbstractGridExcelWriter<T> {
                 try {
                     sheet.addMergedRegion(CellRangeAddress.valueOf(mergeCellValue));
                 } catch (IllegalArgumentException e) {
-                    LOGGER.error(" 병합 수식 [{}] 는 유효하지 않은 값입니다. ", mergeCellValue);
+                    LOGGER.error(" 병합 수식 [" + mergeCellValue + "] 는 유효하지 않은 값입니다. ", e);
                 }
             }
         }

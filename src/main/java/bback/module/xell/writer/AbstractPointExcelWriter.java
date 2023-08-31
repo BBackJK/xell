@@ -5,6 +5,8 @@ import bback.module.xell.enums.ExcelMime;
 import bback.module.xell.exceptions.ExcelWriteException;
 import bback.module.xell.helper.ExcelMethodInvokerHelper;
 import bback.module.xell.helper.ExcelSheetInfo;
+import bback.module.xell.logger.Log;
+import bback.module.xell.logger.LogFactory;
 import bback.module.xell.util.ExcelReflectUtils;
 import bback.module.xell.util.ExcelStringUtils;
 import bback.module.xell.util.ExcelUtils;
@@ -13,8 +15,6 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressBase;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.util.MethodInvoker;
 
@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractPointExcelWriter<T> implements PointExcelWriter<T> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractPointExcelWriter.class);
+    private static final Log LOGGER = LogFactory.getLog(AbstractPointExcelWriter.class);
     protected final Class<T> classType;
     protected final Map<String, ExcelMethodInvokerHelper<ExcelPointer>> excelMethodInvokerHelperMap;
     protected InputStream in;

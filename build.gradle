@@ -4,6 +4,9 @@ plugins {
 
 ext {
     slf4jVersion = '1.7.36'
+    apachePoiVersion = '5.2.2'
+    springCoreVersion = '5.3.29'
+    apacheTomcatEmbedVersion = '9.0.78'
 }
 
 group 'bback.module'
@@ -14,24 +17,13 @@ repositories {
 }
 
 dependencies {
-    implementation "org.slf4j:slf4j-api:${slf4jVersion}"
-    implementation "org.slf4j:slf4j-simple:${slf4jVersion}"
+    implementation "org.springframework:spring-core:${springCoreVersion}"
+    implementation "org.apache.poi:poi:${apachePoiVersion}"
+    implementation "org.apache.poi:poi-ooxml:${apachePoiVersion}"
+    implementation "org.apache.tomcat.embed:tomcat-embed-core:${apacheTomcatEmbedVersion}"
+    compileOnly("org.slf4j:slf4j-api:${slf4jVersion}")
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-
-
-
-    // https://mvnrepository.com/artifact/org.springframework/spring-core
-    implementation group: 'org.springframework', name: 'spring-core', version: '5.3.29'
-
-    // https://mvnrepository.com/artifact/org.apache.poi/poi
-    implementation group: 'org.apache.poi', name: 'poi', version: '5.2.2'
-
-    // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
-    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.2'
-
-    // https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-core
-    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.78'
 }
 
 test {
@@ -55,5 +47,4 @@ task("re-jar") {
     dependsOn clean
     dependsOn jar
     doLast { println("build re-jar...") }
-
 }

@@ -4,18 +4,18 @@ import bback.module.xell.annotations.CellConfig;
 import bback.module.xell.annotations.ExcelPointer;
 import bback.module.xell.annotations.FontConfig;
 import bback.module.xell.helper.ExcelMethodInvokerHelper;
+import bback.module.xell.logger.Log;
+import bback.module.xell.logger.LogFactory;
 import bback.module.xell.util.ExcelReflectUtils;
 import bback.module.xell.util.ExcelStringUtils;
 import org.apache.poi.ss.usermodel.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.MethodInvoker;
 
 import java.util.regex.Pattern;
 
 public class ReflectPointExcelWriter<T> extends AbstractPointExcelWriter<T> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReflectPointExcelWriter.class);
+    private static final Log LOGGER = LogFactory.getLog(ReflectPointExcelWriter.class);
 
     public ReflectPointExcelWriter(Class<T> classType) {
         this(classType, null);

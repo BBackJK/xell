@@ -3,14 +3,14 @@ package bback.module.xell.reader;
 import bback.module.xell.annotations.ExcelTitle;
 import bback.module.xell.enums.ExcelMime;
 import bback.module.xell.exceptions.ExcelReadException;
+import bback.module.xell.logger.Log;
+import bback.module.xell.logger.LogFactory;
 import bback.module.xell.util.ExcelListUtils;
 import bback.module.xell.util.ExcelReflectUtils;
 import bback.module.xell.util.ExcelUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.lang.Nullable;
 
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +26,7 @@ import java.util.List;
 
 public abstract class AbstractGridExcelReader<T, K> implements GridExcelReader<T> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractGridExcelReader.class);
+    private static final Log LOGGER = LogFactory.getLog(AbstractGridExcelReader.class);
     protected final Class<T> classType;
     protected InputStream is;
 
@@ -156,7 +156,7 @@ public abstract class AbstractGridExcelReader<T, K> implements GridExcelReader<T
                 result = "";
                 break;
             default:
-                LOGGER.warn("허용되지 않은 엑셀 데이터 유형입니다. 파일을 확인해주세요. CellType :: {}", cell.getCellType());
+                LOGGER.warn("허용되지 않은 엑셀 데이터 유형입니다. 파일을 확인해주세요. CellType :: " + cell.getCellType());
         }
 
         return result;

@@ -3,13 +3,13 @@ package bback.module.xell.reader;
 import bback.module.xell.annotations.ExcelTitle;
 import bback.module.xell.exceptions.ExcelReadException;
 import bback.module.xell.exceptions.ExcelWriteException;
+import bback.module.xell.logger.Log;
+import bback.module.xell.logger.LogFactory;
 import bback.module.xell.util.ExcelReflectUtils;
 import bback.module.xell.util.ExcelStringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.util.MethodInvoker;
 
@@ -24,7 +24,7 @@ import java.util.List;
 
 public class ReflectGridExcelReader<T> extends AbstractGridExcelReader<T, MethodInvoker> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReflectGridExcelReader.class);
+    private static final Log LOGGER = LogFactory.getLog(ReflectGridExcelReader.class);
 
     public ReflectGridExcelReader(Class<T> classType) {
         super(classType);
