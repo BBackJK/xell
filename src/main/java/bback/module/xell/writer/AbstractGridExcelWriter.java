@@ -3,12 +3,12 @@ package bback.module.xell.writer;
 import bback.module.xell.enums.ExcelMime;
 import bback.module.xell.exceptions.ExcelWriteException;
 import bback.module.xell.util.ExcelUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
@@ -17,9 +17,8 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
-@Slf4j
 public abstract class AbstractGridExcelWriter<T> implements GridExcelWriter<T> {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractGridExcelWriter.class);
     protected final Class<T> classType;
     protected List<T> dataList;
 
@@ -87,7 +86,7 @@ public abstract class AbstractGridExcelWriter<T> implements GridExcelWriter<T> {
             out.close();
             wb.dispose();
         } catch (ExcelWriteException | IOException e) {
-            log.error("엑셀을 만드는데 실패하였습니다. cause :: {}", e.getMessage());
+            LOGGER.error("엑셀을 만드는데 실패하였습니다. cause :: {}", e.getMessage());
             throw new ExcelWriteException();
         }
     }

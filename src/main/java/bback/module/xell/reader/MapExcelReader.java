@@ -1,6 +1,5 @@
 package bback.module.xell.reader;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -15,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 public class MapExcelReader extends AbstractGridExcelReader<Map, String> {
 
     private final Map<String, String> keyMap;

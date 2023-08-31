@@ -1,20 +1,18 @@
 package bback.module.xell.util;
 
-import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.List;
 import java.util.function.Supplier;
 
-@UtilityClass
-@Slf4j
-public class ExcelListUtils {
+public final class ExcelListUtils {
+    private ExcelListUtils() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
 
-    public <T> T getOrSupply(List<T> list, int idx) {
+    public static <T> T getOrSupply(List<T> list, int idx) {
         return getOrSupply(list, idx, null);
     }
 
-    public <T> T getOrSupply(List<T> list, int idx, Supplier<T> supplier) {
+    public static <T> T getOrSupply(List<T> list, int idx, Supplier<T> supplier) {
         try {
             return list.get(idx);
         } catch (IndexOutOfBoundsException ignore) {
@@ -29,7 +27,7 @@ public class ExcelListUtils {
         }
     }
 
-    public boolean isEmpty(List<?> list) {
+    public static boolean isEmpty(List<?> list) {
         return list == null || list.isEmpty();
     }
 }

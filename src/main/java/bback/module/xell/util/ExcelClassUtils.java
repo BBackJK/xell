@@ -1,18 +1,18 @@
 package bback.module.xell.util;
 
-import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.net.URL;
 import java.util.*;
 
-@UtilityClass
-@Slf4j
-public class ExcelClassUtils {
-    public Set<Class<?>> scanClassByAnnotation(String packageName, Class<? extends Annotation> annotation) throws IOException, ClassNotFoundException {
+public final class ExcelClassUtils {
+
+    private ExcelClassUtils() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
+
+    public static Set<Class<?>> scanClassByAnnotation(String packageName, Class<? extends Annotation> annotation) throws IOException, ClassNotFoundException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         String path = packageName.replace('.', '/');
 
@@ -33,11 +33,11 @@ public class ExcelClassUtils {
         return classes;
     }
 
-    public boolean isVoid(Class<?> classType) {
+    public static boolean isVoid(Class<?> classType) {
         return void.class.equals(classType) || Void.class.equals(classType);
     }
 
-    private Set<Class<?>> findClasses(File directory, String packageName, Class<? extends Annotation> annotation) throws ClassNotFoundException {
+    private static Set<Class<?>> findClasses(File directory, String packageName, Class<? extends Annotation> annotation) throws ClassNotFoundException {
         Set<Class<?>> classes = new LinkedHashSet<>();
         if (!directory.exists()) {
             return classes;

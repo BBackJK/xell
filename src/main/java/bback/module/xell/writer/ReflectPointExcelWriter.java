@@ -6,15 +6,16 @@ import bback.module.xell.annotations.FontConfig;
 import bback.module.xell.helper.ExcelMethodInvokerHelper;
 import bback.module.xell.util.ExcelReflectUtils;
 import bback.module.xell.util.ExcelStringUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.MethodInvoker;
 
 import java.util.regex.Pattern;
 
-@Slf4j
 public class ReflectPointExcelWriter<T> extends AbstractPointExcelWriter<T> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReflectPointExcelWriter.class);
 
     public ReflectPointExcelWriter(Class<T> classType) {
         this(classType, null);
@@ -56,7 +57,7 @@ public class ReflectPointExcelWriter<T> extends AbstractPointExcelWriter<T> {
                     Object cellValue = invoker.invoke();
                     target.setCellValue(cellValue == null ? "" : String.valueOf(cellValue));
                 } catch (Exception e) {
-                    log.warn(e.getMessage());
+                    LOGGER.warn(e.getMessage());
                     target.setCellValue("");
                 }
             } else {

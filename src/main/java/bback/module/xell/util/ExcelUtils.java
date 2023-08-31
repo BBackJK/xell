@@ -1,37 +1,36 @@
 package bback.module.xell.util;
 
-import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.File;
 import java.io.IOException;
 
-@UtilityClass
-@Slf4j
-public class ExcelUtils {
+public final class ExcelUtils {
 
-    public final String CONTENT_DISPOSITION = "Content-Disposition";
-    public final int WINDOW_SIZE = 100;
-    public final int DEFAULT_HEADER_SKIP_COUNT = 1;
-    public final String DEFAULT_SHEET_NAME = "Sheet";
+    private ExcelUtils() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
 
-    public final String EXT_XLS = "xls";
-    public final String EXT_XLSX = "xlsx";
+    public static final String CONTENT_DISPOSITION = "Content-Disposition";
+    public static final int WINDOW_SIZE = 100;
+    public static final int DEFAULT_HEADER_SKIP_COUNT = 1;
+    public static final String DEFAULT_SHEET_NAME = "Sheet";
 
-    public boolean isExcel(String filename) {
+    public static final String EXT_XLS = "xls";
+    public static final String EXT_XLSX = "xlsx";
+
+    public static boolean isExcel(String filename) {
         String ext = getExtension(filename);
         return EXT_XLS.equals(ext) || EXT_XLSX.equals(ext);
     }
 
-    public boolean isXlsx(String filename) {
+    public static boolean isXlsx(String filename) {
         return filename != null && EXT_XLSX.equals(getExtension(filename));
     }
 
-    public String getExtension(String filename) {
+    public static String getExtension(String filename) {
         return filename == null || filename.isEmpty() ? "" : filename.substring(filename.lastIndexOf(".") + 1);
     }
 
-    public void makeExcelFilePath(String fileFullPath) throws IOException {
+    public static void makeExcelFilePath(String fileFullPath) throws IOException {
         if (fileFullPath == null || fileFullPath.isEmpty()) return;
         File file = new File(fileFullPath);
         if ( !file.exists() ) {

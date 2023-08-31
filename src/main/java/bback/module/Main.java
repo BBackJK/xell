@@ -1,10 +1,11 @@
 package bback.module;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
 public class Main {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
     public static void main(String[] args) {
-        log.debug("bback excel module on");
+        LOGGER.debug("bback excel module on");
     }
 }
