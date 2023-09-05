@@ -78,10 +78,9 @@ public class ReflectPointExcelWriter<T> extends AbstractPointExcelWriter<T> {
             if (excelPointHelper != null) {
                 // 값 바인딩
                 MethodInvoker invoker = excelPointHelper.getInvoker();
-                Object cellValue = ExcelReflectUtils.invokeTargetObject(invoker, this.data);
-                target.setCellValue(cellValue == null ? "" : String.valueOf(cellValue));
-
-                excelPointHelper.getAnnotation().ifPresent(excelPointer -> {
+                Object cellObject = ExcelReflectUtils.invokeTargetObject(invoker, this.data);
+                String cellValue = cellObject == null ? "" : String.valueOf(cellObject);
+                excelPointHelper.getAnnotation().ifPresentOrElse(excelPointer -> {
                     // font style
                     Font copiedFont = targetWorkbook.createFont();
                     FontConfig pointerFont = excelPointer.font();
@@ -99,7 +98,13 @@ public class ReflectPointExcelWriter<T> extends AbstractPointExcelWriter<T> {
 
                     // apply cell style
                     target.setCellStyle(copiedCellStyle);
-                });
+
+                    if (excelPointer.isFormula()) {
+                        target.setCellFormula(cellValue);
+                    } else {
+                        target.setCellValue(cellValue);
+                    }
+                }, () -> target.setCellValue(cellValue));
             }
         }
 

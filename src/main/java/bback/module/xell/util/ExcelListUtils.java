@@ -1,5 +1,7 @@
 package bback.module.xell.util;
 
+import org.springframework.lang.Nullable;
+
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -8,10 +10,12 @@ public final class ExcelListUtils {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
 
+    @Nullable
     public static <T> T getOrSupply(List<T> list, int idx) {
         return getOrSupply(list, idx, null);
     }
 
+    @Nullable
     public static <T> T getOrSupply(List<T> list, int idx, Supplier<T> supplier) {
         try {
             return list.get(idx);

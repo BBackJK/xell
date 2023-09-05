@@ -111,8 +111,8 @@ public class ReflectGridExcelWriter<T> extends AbstractGridExcelWriter<T> {
 
         int lastHeaderRowIndex = sheet.getLastRowNum();
         Row lastHeaderRow = sheet.getRow(lastHeaderRowIndex);
-        int dataCount = this.dataList.size();                       // body row 사이즈
         int cellCount = lastHeaderRow.getPhysicalNumberOfCells();   // body row 당 cell 사이즈 (마지막 Header 의 cell 수를 차용.)
+        int dataCount = this.dataList.size();                       // body row 사이즈
         int rowNum = lastHeaderRowIndex + 1; // rowNum
 
         List<CellStyle> cellStyles = new ArrayList<>(cellCount);
@@ -122,6 +122,7 @@ public class ReflectGridExcelWriter<T> extends AbstractGridExcelWriter<T> {
                 Cell cell = row.createCell(j);
 
                 ExcelMethodInvokerHelper<ExcelBody> invokerHelper = ExcelListUtils.getOrSupply(excelBodyInvokerHelperList, j);
+                if (invokerHelper == null) continue;
                 MethodInvoker invoker = invokerHelper.getInvoker();
                 Object cellValue = ExcelReflectUtils.invokeTargetObject(invoker, dataList.get(i));
                 // value 바인딩

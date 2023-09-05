@@ -14,24 +14,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MapExcelReader extends AbstractGridExcelReader<Map, String> {
+public class MapGridExcelReader extends AbstractGridExcelReader<Map, String> {
 
     private final Map<String, String> keyMap;
 
-    public MapExcelReader() {
+    public MapGridExcelReader() {
         this((Map<String, String>) null);
     }
 
-    public MapExcelReader(Map<String, String> keyMap) {
+    public MapGridExcelReader(Map<String, String> keyMap) {
         super(Map.class);
         this.keyMap = keyMap;
     }
 
-    public MapExcelReader(String filePath) throws IOException {
+    public MapGridExcelReader(String filePath) throws IOException {
         this(Files.newInputStream(Paths.get(filePath)));
     }
 
-    public MapExcelReader(InputStream is) {
+    public MapGridExcelReader(InputStream is) {
         super(Map.class, is);
         this.keyMap = null;
     }

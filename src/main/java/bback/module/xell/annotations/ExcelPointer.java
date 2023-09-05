@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 public @interface ExcelPointer {
 
     String value() default "";     // A1, A2, ...
+    boolean isFormula() default false; // 수식 여부
     FontConfig font() default @FontConfig;
     CellConfig cell() default @CellConfig;
 }

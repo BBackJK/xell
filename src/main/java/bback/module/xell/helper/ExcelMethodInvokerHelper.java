@@ -22,8 +22,10 @@ public class ExcelMethodInvokerHelper<T extends Annotation> implements Comparabl
         this.sort = sort;
     }
 
-    public Optional<T> getAnnotation() {
-        return Optional.ofNullable(this.annotation);
+    public OptionalHelper<T> getAnnotation() {
+        return OptionalHelper.of(
+                Optional.ofNullable(this.annotation)
+        );
     }
 
     @Override
